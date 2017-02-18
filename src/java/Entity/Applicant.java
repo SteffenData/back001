@@ -6,44 +6,46 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author juhlm
  */
 @Entity
-public class Person implements Serializable {
+public class Applicant implements Serializable {
     @Id @GeneratedValue(strategy= GenerationType.TABLE)
-    private long id;
+    private String id;
     private String firstName;
     private String lastName;
     private int age;
-    @OneToMany(mappedBy="person")
-    private List<Skills> skills;
+    @OneToMany(mappedBy="applicant", cascade=CascadeType.PERSIST)
+    private List<Skills> skills = new ArrayList();
 
-    public Person() {
+    public Applicant() {
     }
 
-    public Person(long id, String firstName, String lastName, int age, List<Skills> skills) {
-        this.id = id;
+    public Applicant(String firstName, String lastName, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.skills = skills;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,6 +73,7 @@ public class Person implements Serializable {
         this.age = age;
     }
 
+  
     public List<Skills> getSkills() {
         return skills;
     }
@@ -79,5 +82,10 @@ public class Person implements Serializable {
         this.skills = skills;
     }
     
+    public void addSkill(Skills skill){
+        skills.add(skill);
+    }
+
+ 
     
 }

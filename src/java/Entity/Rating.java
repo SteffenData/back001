@@ -6,11 +6,13 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -20,27 +22,25 @@ import javax.persistence.ManyToOne;
 public class Rating implements Serializable {
     
     @Id @GeneratedValue(strategy= GenerationType.TABLE)
-    private long id;
+    private String id;
     private int score;
     private String comment;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     private Skills skill;
 
     public Rating() {
     }
 
-    public Rating(long id, int score, String comment, Skills skill) {
-        this.id = id;
+    public Rating(int score, String comment) {
         this.score = score;
         this.comment = comment;
-        this.skill = skill;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -66,7 +66,5 @@ public class Rating implements Serializable {
 
     public void setSkill(Skills skill) {
         this.skill = skill;
-    }
-    
-    
+    } 
 }

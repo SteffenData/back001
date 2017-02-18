@@ -7,13 +7,17 @@ package Entity;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 
@@ -27,31 +31,29 @@ public class Skills implements Serializable {
 
 
     @Id @GeneratedValue(strategy= GenerationType.TABLE)
-    private Long id;
+    private String id;
     private String skillName;
     private String description;
-    @ManyToOne
-    private Person person;
+    @ManyToOne(cascade=CascadeType.PERSIST)
+    private Applicant applicant;
     @OneToMany(mappedBy = "skill")
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList();
 
 
     public Skills() {
     }
 
-    public Skills(Long id, String skillName, String description, Person person, List<Rating> ratings) {
-        this.id = id;
+    public Skills(String skillName, String description) {
         this.skillName = skillName;
         this.description = description;
-        this.person = person;
-        this.ratings = ratings;
-    }   
+      
+    }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -70,13 +72,13 @@ public class Skills implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    public Person getPerson() {
-        return person;
+
+    public Applicant getPerson() {
+        return applicant;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPerson(Applicant applicant) {
+        this.applicant = applicant;
     }
 
     public List<Rating> getRatings() {
@@ -86,5 +88,8 @@ public class Skills implements Serializable {
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
     }
- 
+    
+    public void addRating(Rating rating){
+        ratings.add(rating);
+    }
 }
